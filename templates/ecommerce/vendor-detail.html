@@ -1,0 +1,312 @@
+{% extends 'patials/base.html' %}
+{% load static %}
+
+{% block content %}
+<main class="main">
+    <div class="container p-0">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="archive-header-3 mt-30 mb-80" style="background-image: url({{ vendor.cover_image.url }}); background-size: cover; background-position: center; box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);">
+                    <div class="archive-header-3-inner">
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <div class="vendor-logo mb-3 text-center">
+                                    <br><br><img src="{{ vendor.image.url }}" alt="Vendor Logo" class="img-fluid rounded-circle border" style="width: 150px; height: 150px;" />
+                                </div>
+                                <div class="product-category text-center">
+                                    <span class="text-muted">Since {{ vendor.date|date:"Y" }}</span>
+                                </div>
+                                <h3 class="mb-4 text-dark text-center"><a href="vendor-details-1.html" class="text-dark">{{ vendor.title }}</a></h3>
+                                <div class="product-rate-cover mb-3 text-center">
+                                    <div class="product-rate d-inline-block">
+                                        <div class="product-rating" style="width: 90%"></div>
+                                    </div>
+                                    <span class="font-small ml-2 text-muted"> (4.0)</span>
+                                </div>
+                            </div>
+                           
+                        </div>
+                        <div class="col-lg-8 text-center mt-4">
+                            <div class="vendor-des mb-3 p-3" style="background-color: #f8f9fa; border: 1px solid #dee2e6;">
+                                <p class="font-sm text-dark text-center"><strong>{{ vendor.description }}</strong></p>
+                                <br>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-4 text-center mx-auto">
+                                <ul class="font-sm list-unstyled text-dark">
+                                    <li class="mb-3"><img class="mr-2" src="{% static 'assets/imgs/theme/icons/icon-location.svg' %}" alt="Location Icon" /><strong>Address:</strong><br><span>{{ vendor.address }}</span></li>
+                                </ul>
+                            </div> 
+                            <div class="col-lg-4 text-center mx-auto">
+                                <ul class="font-sm list-unstyled text-dark">
+                                    <li class="mb-3"><img class="mr-2" src="{% static 'assets/imgs/theme/icons/icon-contact.svg' %}" alt="Contact Icon" /><strong>Call Us:</strong><br><span>{{ vendor.contact }}</span></li>
+                                </ul>
+                            </div>
+                            <div class="col-lg-4 text-center mx-auto">
+                                <ul class="font-sm list-unstyled text-dark">
+                                    <li class="mb-3"><strong>Follow Us:</strong>
+                                        <ul class="social-network list-inline">
+                                            
+                                            {% if vendor.has_facebook %}
+                                                <li class="mb-3 d-inline">
+                                                    <a href="{{ vendor.facebook }}" target="_blank">
+                                                        <img class="mr-2" src="{% static 'assets/imgs/theme/icons/facebook.png' %}" alt="Facebook Icon" />
+                                                    </a>
+                                                    </li>
+                                            {% endif %}
+
+                                            {% if vendor.has_instagram %}
+                                                <li class="mb-3 d-inline">
+                                                    <a href="{{ vendor.instagram }}" target="_blank">
+                                                        <img class="mr-2" src="{% static 'assets/imgs/theme/icons/insta.png' %}" alt="Instagram Icon" />
+                                                    </a>
+                                                </li>
+                                            {% endif %}
+
+                                            {% if vendor.has_linkedin %}
+                                                <li class="mb-3 d-inline">
+                                                    <a href="{{ vendor.linkedin }}" target="_blank">
+                                                        <img class="mr-2" src="{% static 'path_to_linkedin_icon.png' %}" alt="LinkedIn Icon" />
+                                                    </a>
+                                                </li>
+                                            {% endif %}
+
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div> 
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="container mb-30">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="product-list mb-50">
+                    <div class="row flex-row-reverse">
+                        <div class="col-lg-4-5">
+                            <div class="shop-product-fillter">
+                                <div class="totall-product">
+                                    <p>We found <strong class="text-brand">{{ products.count }}</strong> item{{ products.count|pluralize }} for you!</p>
+                                </div>
+                                <div class="sort-by-product-area">
+                                    <div class="sort-by-cover mr-3">
+                                        <div class="sort-by-product-wrap">
+                                            <div class="sort-by">
+                                                <span><i class="fi-rs-apps"></i>Show:</span>
+                                            </div>
+                                            <div class="sort-by-dropdown-wrap">
+                                                <span>50 <i class="fi-rs-angle-small-down"></i></span>
+                                            </div>
+                                        </div>
+                                        <div class="sort-by-dropdown">
+                                            <ul>
+                                                <li><a href="#">100</a></li>
+                                                <li><a href="#">150</a></li>
+                                                <li><a href="#">200</a></li>
+                                                <li><a href="#">All</a></li>
+                                            </ul>
+                                        </div>   
+                                    </div>
+                                    <div class="sort-by-cover">
+                                        <div class="sort-by-product-wrap">
+                                            <div class="sort-by">
+                                                <span><i class="fi-rs-apps-sort"></i>Sort by:</span>
+                                            </div>
+                                            <div class="sort-by-dropdown-wrap">
+                                                <span> Featured <i class="fi-rs-angle-small-down"></i></span>
+                                            </div>
+                                        </div>
+                                        <div class="sort-by-dropdown">
+                                            <ul>
+                                                <li><a class="active" href="#">Featured</a></li>
+                                                <li><a href="#">Price: Low to High</a></li>
+                                                <li><a href="#">Price: High to Low</a></li>
+                                                <li><a href="#">Release Date</a></li>
+                                                <li><a href="#">Avg. Rating</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {% for product in products %}
+                            <div class="product-cart-wrap text-center">
+                                <div class="product-img-action-wrap">
+                                    <div class="product-img product-img-zoom">
+                                        <div class="product-img-inner">
+                                            <a href="{% url 'ecommerce:product-detail' product.pid %}">
+                                                <img class="default-img" src="{{ product.image.url }}" alt="" />
+                                                <img class="hover-img" src="{{ product.image.url }}" alt="" />
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="product-action-1">
+                                        <a aria-label="Add To Wishlist" class="action-btn" href="shop-wishlist.html"><i class="fi-rs-heart"></i></a>
+                                        <a aria-label="Compare" class="action-btn" href="shop-compare.html"><i class="fi-rs-shuffle"></i></a> 
+                                        <a aria-label="Quick view" class="action-btn" data-bs-toggle="modal" data-bs-target="#quickViewModal"><i class="fi-rs-eye"></i></a>
+                                    </div>
+                                    <div class="product-badges product-badges-position product-badges-mrg">
+                                        <span class="hot">-{{product.get_percentage|floatformat:0 }}%</span>
+                                    </div>
+                                </div>
+                            
+                                <div class="product-content-wrap">
+                                    <br>
+                                    <br>
+                                    <div class="product-category">
+                                        <a href="#">{{ product.category.title }}</a>
+                                    </div>
+                                    <h2><a href="{% url 'ecommerce:product-detail' product.pid %}">{{ product.title|truncatechars:50 }}</a></h2>
+                                    <div class="product-price">
+                                        <span>${{ product.price }}</span>
+                                        <span class="old-price">{{ product.old_price }}</span>
+                                    </div>
+                            
+                                    <div class="mt-10">
+                                        <a aria-label="Buy now" class="btn" href="shop-cart.html"><i class="fi-rs-shopping-cart mr-5"></i>Add to Cart</a>
+                                    </div>
+                                    <div class="mt-20 text-body font-sm font-heading font-weight-bold">
+                                        <a href="#" class="add-wishlist"><i class="fi-rs-shuffle mr-5"></i>Add Compare</a>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            {% endfor %}
+
+                            <div class="pagination-area mt-15 mb-sm-5 mb-lg-0">
+                                <nav aria-label="Page navigation example">
+                                    <ul class="pagination justify-content-start">
+                                        <li class="page-item active"><a class="page-link" href="#">01</a></li>
+                                        <li class="page-item"><a class="page-link" href="#">02</a></li>
+                                        <li class="page-item"><a class="page-link" href="#">03</a></li>
+                                        <li class="page-item"><a class="page-link dot" href="#">...</a></li>
+                                        <li class="page-item"><a class="page-link" href="#">16</a></li>
+                                        <li class="page-item"><a class="page-link" href="#"><i class="fi-rs-angle-double-small-right"></i></a></li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                <div class="col-lg-3 primary-sidebar sticky-sidebar">
+                    <div class="row">
+                        <div class="col-lg-12 col-mg-6"></div>
+                        <div class="col-lg-12 col-mg-6"></div>
+                    </div>
+                    <div class="widget-category mb-30">
+                        <h5 class="section-title style-1 mb-30 wow fadeIn animated">Category</h5>
+                       
+                                <ul class="categories">
+                                    {% for c in categories %}
+                                    <li class="category-item">
+                                        <input class="form-check-input filter-checkbox" type="checkbox" name="checkbox" data-filter="category" id="examplecheckbox2" value="{{ c.id }}" />
+                                        <a href="{% url 'ecommerce:category_product_list' c.cid %}" class="category-link">
+                                            <img class="category-icon" src="{{ c.image.url }}" alt="{{ c.title }}">
+                                            <span class="category-title">{{ c.title }}</span>
+                                        </a>
+                                    </li>
+                                    {% endfor %}
+                                </ul>
+                        </div>
+                    <div id="filterByPrice" class="widget-filter mb">
+                        <img class="default-img" src="{% static 'assets\imgs\products\1675131483.webp' %}" alt="" />
+                        <img class="hover-img" src="{% static 'assets\imgs\products\1675131483.webp' %}" alt="" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <style>
+      
+        .categories {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .category-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px; /* Ajoute un espace entre chaque élément */
+        }
+        
+        .form-check-input {
+            margin-right: 5px; /* Ajoute un espace entre la checkbox et l'image */
+        }
+        
+        .category-link {
+            display: flex;
+            align-items: center;
+            text-decoration: none; /* Supprime le soulignement du lien */
+        }
+        
+        .category-icon {
+            width: 40px;
+            height: 40px;
+            object-fit: cover;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+        
+        .category-title {
+            display: inline-block;
+            vertical-align: middle;
+        }
+        /* Style de la checkbox lorsqu'elle est cochée */
+.form-check-input:checked {
+background-color: brown;
+border-color: brown;
+}
+
+/* Style de la coche à l'intérieur de la checkbox lorsqu'elle est cochée */
+.form-check-input:checked::before {
+content: '\2713'; /* Utilise le caractère Unicode pour la coche (✔) */
+color: white; /* Couleur du texte de la coche */
+font-size: 12px; /* Taille de la coche */
+position: absolute;
+top: 50%; /* Alignement vertical au milieu */
+left: 50%; /* Alignement horizontal au milieu */
+transform: translate(-50%, -50%); /* Ajuste la position pour être centrée */
+}
+input[type="range"] {
+    appearance: none;
+    -webkit-appearance: none;
+    margin-right: 15px;
+    height: 7px;
+    background: rgba(255, 190, 0, 0.6);
+    border-radius: 5px;
+    background-image: linear-gradient(#D8C26E, #D8C26E);
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    background: #D8C26E;
+    cursor: ew-resize;
+    box-shadow: 0 0 2px 0 #555;
+    transition: background 0.3s ease-in-out;
+}
+
+input[type="range"]::-webkit-slider-runnable-track {
+    -webkit-appearance: none;
+    appearance: none;
+    box-shadow: none;
+    border: none;
+    background: transparent;
+}
+        
+            
+    </style>    
+</main>
+{% endblock %}

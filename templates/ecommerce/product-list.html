@@ -1,0 +1,277 @@
+{% extends "patials/base.html" %}
+{% load static%} 
+{% block content %}
+
+    <head>
+        <style>
+            input[type="range"] {
+                appearance: none;
+                -webkit-appearance: none;
+                margin-right: 15px;
+                height: 7px;
+                background: rgba(255, 190, 0, 0.6);
+                border-radius: 5px;
+                background-image: linear-gradient(#D8C26E, #D8C26E);
+                background-size: 100% 100%;
+                background-repeat: no-repeat;
+            }
+        
+            input[type="range"]::-webkit-slider-thumb {
+                -webkit-appearance: none;
+                appearance: none;
+                height: 20px;
+                width: 20px;
+                border-radius: 50%;
+                background: #D8C26E;
+                cursor: ew-resize;
+                box-shadow: 0 0 2px 0 #555;
+                transition: background 0.3s ease-in-out;
+            }
+        
+            input[type="range"]::-webkit-slider-runnable-track {
+                -webkit-appearance: none;
+                appearance: none;
+                box-shadow: none;
+                border: none;
+                background: transparent;
+            }
+        </style>
+    </head>
+     <main class="main">
+        <div class="page-header breadcrumb-wrap">
+            <div class="container">
+                <div class="breadcrumb">
+                    <a href="index.html" rel="nofollow">Home</a>
+                    <span></span> Products
+                </div>
+            </div>
+        </div>
+        <section class="mt-50 mb-50">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-9">
+                        <div class="shop-product-fillter">
+                            <div class="totall-product">
+                                <p> We found <strong class="text-brand">{{products.count}}</strong> items for you!</p>
+                            </div>
+                            <div class="sort-by-product-area">
+                                <div class="sort-by-cover mr-10">
+                                    <div class="sort-by-product-wrap">
+                                        <div class="sort-by">
+                                            <span><i class="fi-rs-apps"></i>Show:</span>
+                                        </div>
+                                        <div class="sort-by-dropdown-wrap">
+                                            <span> 50 <i class="fi-rs-angle-small-down"></i></span>
+                                        </div>
+                                    </div>
+                                    <div class="sort-by-dropdown">
+                                        <ul>
+                                            <li><a class="active" href="#">50</a></li>
+                                            <li><a href="#">100</a></li>
+                                            <li><a href="#">150</a></li>
+                                            <li><a href="#">200</a></li>
+                                            <li><a href="#">All</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="sort-by-cover">
+                                    <div class="sort-by-product-wrap">
+                                        <div class="sort-by">
+                                            <span><i class="fi-rs-apps-sort"></i>Sort by:</span>
+                                        </div>
+                                        <div class="sort-by-dropdown-wrap">
+                                            <span> Featured <i class="fi-rs-angle-small-down"></i></span>
+                                        </div>
+                                    </div>
+                                    <div class="sort-by-dropdown">
+                                        <ul>
+                                            <li><a class="active" href="#">Featured</a></li>
+                                            <li><a href="#">Price: Low to High</a></li>
+                                            <li><a href="#">Price: High to Low</a></li>
+                                            <li><a href="#">Release Date</a></li>
+                                            <li><a href="#">Avg. Rating</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row product-grid-3" id="filtered-products">
+
+                            {% for product in products %}
+                            <div class="col-lg-4 col-md-4 col-6 col-sm-6">
+                                <div class="product-cart-wrap mb-30">
+                                    <div class="product-img-action-wrap">
+                                        <div class="product-img product-img-zoom">
+                                            <a href="{% url 'ecommerce:product-detail' product.pid %}">
+                                                <img class="default-img" src="{{product.image.url}}" alt="">
+                                                <img class="hover-img" src="{{product.image.url}}" alt="">
+                                            </a>
+                                        </div>
+                                        <div class="product-action-1">
+                                            <a aria-label="Quick view" class="action-btn hover-up" data-bs-toggle="modal" data-bs-target="#quickViewModal">
+                                                <i class="fi-rs-search"></i></a>
+                                            <button aria-label="Add To Wishlist" class="add-to-wishlist" data-product-item="{{product.id}}" id = "add-to-wishlist"><i class="fi-rs-heart"></i></button>
+                                        </div>
+                                        <div class="product-badges product-badges-position product-badges-mrg">
+                                            <span class="hot">{{product.get_percentage|floatformat}}</span>
+                                        </div>
+                                    </div>
+                                    <div class="product-content-wrap">
+                                        <div class="product-category">
+                                            <a href="product-list.html">{{product.category}}</a>
+                                        </div>
+                                        <h2><a href="product-details.html">{{product.title}}</a></h2>
+                                        <div class="rating-result" title="90%">
+                                            <span>
+                                                <span>4</span>
+                                            </span>
+                                        </div>
+                                        <div class="product-price">
+                                            <span>$</span> <span class="current-product-price{{product.id}}">{{product.price}}</span>
+                                            <span class="old-price"> {{product.old_price}}$ </span>
+                                        </div>
+                                        
+                                        <div class="product-action-1 show">
+                                            <input type="hidden" value="1" id="product-quantity" class="product-quantity-{{product.id}}">
+                                            <input type="hidden" class="product-pid-{{product.id}}" value="{{product.pid}}">
+                                            <input type="hidden" class="product-image-{{product.id}}" value="{{product.image.url}}">
+                                            <input type="hidden" class="product-id-{{product.id}}" value="{{product.id}}">
+                                            <input type="hidden" class="product-title-{{product.id}}" value="{{product.title}}">
+                                            <button aria-label="Add To Cart" class="add add-to-cart-btn" data-index="{{product.id}}" id = "add-to-cart-btn"><i class="fi-rs-shopping-bag-add"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                    
+                        </div>
+                        <!--pagination-->
+                        <div class="pagination-area mt-15 mb-sm-5 mb-lg-0">
+                            <nav aria-label="Page navigation example">
+                                <ul class="pagination justify-content-start">
+                                    <li class="page-item active"><a class="page-link" href="#">01</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">02</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">03</a></li>
+                                    <li class="page-item"><a class="page-link dot" href="#">...</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">16</a></li>
+                                    <li class="page-item"><a class="page-link" href="#"><i class="fi-rs-angle-double-small-right"></i></a></li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 primary-sidebar sticky-sidebar">
+                        <div class="row">
+                            <div class="col-lg-12 col-mg-6"></div>
+                            <div class="col-lg-12 col-mg-6"></div>
+                        </div>
+
+                        <div class="sidebar-widget price_range range mb-30">
+                            <div class="widget-header position-relative mb-20 pb-10">
+                                <h5 class="widget-title mb-10">Fill by price</h5>
+                                <div class="bt-1 border-color-1"></div>
+                            </div>
+                            
+                                <input type="range" name="ranDge" value="{{min_max_price.price__min|floatformat:2}}" class="slider-range" id="range" min = "{{min_max_price.price__min}}" max="{{min_max_price.price__max}}" oninput="max_price.value=this.value">
+                                <div class="caption">From:<strong id="slider-range-value1" class="text-brand">${{min_max_price.price__min|floatformat:2}}</strong></div>
+                                <div class="caption">To:<strong id="slider-range-value2" class="text-brand">${{min_max_price.price__max|floatformat:2}}</strong></div>
+                                <input type="number" name="" value="{{min_max_price.price__min|floatformat:2}}" id="max_price" min ="{{min_max_price.price__min}}" max="{{min_max_price.price__max}}" placeholder ="current price" onkeyup="range.value=this.value">
+
+                            <div class="custom-checkbox">
+                                <button class="btn mt-20 w-100" id="price-filter-btn" >Filter By Price</button>
+                            </div>
+                        </div>
+                        <div class="widget-category mb-30">
+                            <h5 class="section-title style-1 mb-30 wow fadeIn animated">Category</h5>
+                            <ul class="categories">
+                                {% for c in categories %}
+                                <li class="category-item">
+                                    <input class="form-check-input filter-checkbox" type="checkbox" name="checkbox" data-filter="category" id="examplecheckbox2" value="{{ c.id }}" />
+                                    <a href="{% url 'ecommerce:category_product_list' c.cid %}" class="category-link">
+                                        <img class="category-icon" src="{{ c.image.url }}" alt="{{ c.title }}">
+                                        <span class="category-title">{{ c.title }}</span>
+                                    </a>
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        
+                        <div class="widget-category mb-30">
+                            <h5 class="section-title style-1 mb-30 wow fadeIn animated">Vendor</h5>
+                            <ul class="categories">
+                                {% for v in vendors %}
+                                <li class="category-item">
+                                    <input class="form-check-input filter-checkbox" data-filter="vendor" type="checkbox" name="checkbox" id="examplecheckbox1" value="{{ v.id }}" />
+                                    <label class="form-check-label" for="examplecheckbox1">
+                                        <span>{{v.title}}</span>
+                                    </label>
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        <!-- Fillter By Price -->
+
+                        <!-- Product sidebar Widget -->
+                    </div>
+                </div>
+            </div>
+        </section>
+        <style>
+      
+            .categories {
+                list-style: none;
+                padding: 0;
+                margin: 0;
+            }
+            
+            .category-item {
+                display: flex;
+                align-items: center;
+                margin-bottom: 10px; /* Ajoute un espace entre chaque élément */
+            }
+            
+            .form-check-input {
+                margin-right: 5px; /* Ajoute un espace entre la checkbox et l'image */
+            }
+            
+            .category-link {
+                display: flex;
+                align-items: center;
+                text-decoration: none; /* Supprime le soulignement du lien */
+            }
+            
+            .category-icon {
+                width: 40px;
+                height: 40px;
+                object-fit: cover;
+                border-radius: 50%;
+                margin-right: 10px;
+            }
+            
+            .category-title {
+                display: inline-block;
+                vertical-align: middle;
+            }
+            /* Style de la checkbox lorsqu'elle est cochée */
+.form-check-input:checked {
+    background-color: brown;
+    border-color: brown;
+}
+
+/* Style de la coche à l'intérieur de la checkbox lorsqu'elle est cochée */
+.form-check-input:checked::before {
+    content: '\2713'; /* Utilise le caractère Unicode pour la coche (✔) */
+    color: white; /* Couleur du texte de la coche */
+    font-size: 12px; /* Taille de la coche */
+    position: absolute;
+    top: 50%; /* Alignement vertical au milieu */
+    left: 50%; /* Alignement horizontal au milieu */
+    transform: translate(-50%, -50%); /* Ajuste la position pour être centrée */
+}
+
+            
+                
+        </style>    
+</main>
+    
+
+{% endblock content %}

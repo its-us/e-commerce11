@@ -1,0 +1,239 @@
+{% load static %}
+{% block content %}
+<style>
+    
+  
+
+    main {
+        max-width: 80%;
+        margin: 20px auto;
+        background-color: #fff;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+    .dashboard-header {
+        background-color: #D6AD60;
+        color: #fff;
+        padding: 15px;
+        text-align: center;
+    }
+
+    .dashboard-header a {
+        color: #fff;
+        text-decoration: none;
+        margin-right: 10px;
+    }
+
+    .dashboard-header i {
+        margin-right: 5px;
+    }
+
+    .page-header {
+        background-color: #fff;
+        color: #fff;
+        padding: 20px;
+        text-align: center;
+    }
+
+    h1 {
+        margin: 0;
+        font-size: 28px;
+        color: #333;
+    }
+
+    address {
+        font-size: 16px;
+        margin: 10px 0;
+        color: #555;
+    }
+
+    img {
+        max-width: 100%;
+        height: auto;
+        display: block;
+        margin: 10px 0;
+    }
+
+    article {
+        padding: 20px;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+    }
+
+    th, td {
+        border: 1px solid #ddd;
+        padding: 12px;
+        text-align: left;
+        color: #333;
+    }
+
+    th {
+        background-color: #4CAF50;
+        color: #fff;
+    }
+
+    .add, .cut, .download-btn, .print-btn {
+        background: #D6AD60;
+        color: #fff;
+        padding: 8px 15px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 14px;
+        margin: 0 5px;
+        cursor: pointer;
+        border: none;
+        border-radius: 3px;
+        transition: background 0.3s ease;
+    }
+
+    .cut {
+        background: #F44336;
+    }
+
+    .balance {
+        margin-top: 20px;
+    }
+
+    aside {
+        padding: 20px;
+        background-color: #f1f1f1;
+        border-left: 4px solid #D6AD60;
+    }
+
+    aside h1 {
+        color: #333;
+        font-size: 20px;
+        border-bottom: 2px solid #D6AD60;
+        padding-bottom: 10px;
+        margin-bottom: 15px;
+    }
+
+    aside p {
+        font-size: 16px;
+        line-height: 1.5;
+        color: #555;
+    }
+    th.total-header {
+    font-weight: bold;
+    text-align: right;
+    font-size: 18px;
+    }
+    td.total-amount {
+        font-weight: bold;
+    }
+</style>
+
+<main class="main">
+    <div class="dashboard-header">
+        <a href="#">
+            <i class="fa fa-dashboard"></i> Dashboard
+        </a>
+    </div>
+    <div class="page-header breadcrumb-wrap">
+        <div id="invoiceContent">
+            <h1>Invoice</h1>
+            <address contenteditable>
+                <p>101 E. Chapman Ave, Orange, CA 92866</p>
+                <p>(800) 555-1234</p>
+            </address>
+            <address contenteditable>
+                <p>the404company</p>
+            </address>
+            <table class="meta">
+                
+
+                
+                <P>
+                    <strong>invoice to </strong>{{request.user|title}}<br/>
+                </P>
+                
+                
+            </table>
+            <table class="inventory">
+                <thead>
+                    <tr>
+                        <th><span contenteditable>Item</span></th>
+                        <th><span contenteditable>Quantity</span></th>
+                        <th><span contenteditable>Price</span></th>
+                        <th><span contenteditable>Total</span></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for product_id, item in cart_data.items %}
+                        <tr>
+                            <td><span contenteditable>✔ {{ item.title }}</span></td>                        
+                            <td><span contenteditable>{{ item.qty }}</span></td>
+                            <td><span data-prefix>$</span><span>{{ item.price }}</span></td>
+                            <td><span data-prefix>$</span><span>{% widthratio item.price 1 item.qty %}</span></td>
+                        </tr>
+                    {% endfor %}
+                    <tr>
+                        <th colspan="3" class="total-header"><span contenteditable>TOTAL</span></th>
+                        <td class="total-amount">${{cart_total_amount}}</td>
+                    </tr>
+                    
+                </tbody>
+            </table>
+                
+            </table>
+        </article>
+        <aside>
+            <h1><span contenteditable>thank you for your trust </span></h1>
+        </aside>
+    </div>
+    <div contenteditable>
+        <p>A finance charge of 1.5% will be made on unpaid balances after 30 days.</p>
+    </div>
+    <div>
+        <button id="downloadBtn" class="download-btn">Download</button>
+        <button id="printBtn" class="print-btn">Print</button> 
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
+    <script>
+        document.getElementById("downloadBtn").addEventListener("click", function () {
+            // Select the element containing your invoice content
+            const element = document.getElementById("invoiceContent");
+        
+            // Use html2pdf to generate a PDF
+            html2pdf(element, {
+                margin: 10,
+                filename: 'invoice.pdf',
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2 },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            });
+        });
+
+        document.getElementById("downloadBtn").addEventListener("click", function () {
+        // Select the element containing your invoice content
+        const element = document.getElementById("invoiceContent");
+
+        // Use html2pdf to generate a PDF
+        html2pdf(element, {
+            margin: 10,
+            filename: 'invoice.pdf',
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: { scale: 2 },
+            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+        });
+        });
+
+        document.getElementById("printBtn").addEventListener("click", function () {
+            // Trigger the browser's print dialog
+            window.print();
+        });
+    </script>
+</main>
+<br>
+
+
+
+{% endblock content %}
+
